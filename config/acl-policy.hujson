@@ -1,0 +1,35 @@
+// tag:host on the Mini. Shared users: tcp 443 (Serve) and 22 (OpenSSH) only.
+// Funnel on 8443 is public; this ACL does not gate internet visitors.
+// Tailscale SSH is admin-only; renters use OpenSSH keys.
+
+{
+	"tagOwners": {
+		"tag:host": ["autogroup:admin"]
+	},
+	"grants": [
+		{
+			"src": ["autogroup:shared"],
+			"dst": ["tag:host"],
+			"ip": ["tcp:443", "tcp:22"]
+		},
+		{
+			"src": ["autogroup:admin"],
+			"dst": ["tag:host"],
+			"ip": ["tcp:22", "tcp:443", "tcp:8443", "tcp:10000"]
+		}
+	],
+	"ssh": [
+		{
+			"action": "accept",
+			"src": ["autogroup:admin"],
+			"dst": ["tag:host"],
+			"users": ["autogroup:nonroot", "root"]
+		}
+	],
+	"nodeAttrs": [
+		{
+			"target": ["tag:host"],
+			"attr": ["funnel"]
+		}
+	]
+}

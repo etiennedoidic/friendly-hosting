@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Placeholder</title>
+  <link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+  <h1>Placeholder</h1>
+  <p>Private site at <code>~/srv</code>. Tailscale Serve, port 443 only.</p>
+  <footer>hosted using friendly-hosting</footer>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+</body>
+</html>
