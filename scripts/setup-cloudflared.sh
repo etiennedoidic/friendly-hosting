@@ -100,6 +100,7 @@ fi
 cp "$FH_ROOT/scripts/lib/serve-static.py" "$PY"
 chmod 755 "$PY"
 
+# --- named tunnel -------------------------------------------------------
 TUNNEL_ID=""
 if [ -f "$ST/tunnel-id" ]; then
 	TUNNEL_ID="$(tr -d '[:space:]' <"$ST/tunnel-id")"
@@ -115,6 +116,7 @@ import json, sys, os
 d = json.load(sys.stdin)["result"]
 cred = d.get("credentials_file") or {}
 if not cred:
+    # Some API versions return token + tunnel secret fields on the result itself.
     cred = {
         "AccountTag": d.get("account_tag") or d.get("accountTag") or "",
         "TunnelID": d.get("id") or "",
@@ -133,6 +135,7 @@ CRED="$CRED_DIR/${TUNNEL_ID}.json"
 python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); sys.exit(0 if d.get("TunnelSecret") and d.get("TunnelID") else 1)' "$CRED" \
 	|| fh_die "incomplete Cloudflare tunnel credentials in $CRED (need TunnelID + TunnelSecret). Delete $ST/tunnel-id and rerun with a token that can create tunnels."
 
+# --- ports + yml + DNS --------------------------------------------------
 python3 - "$CFG" "$CRED" "$TUNNEL_ID" "$MAPS" "$ST" <<'PY'
 import json, pathlib, sys
 cfg_path, cred, tunnel_id, maps, st = sys.argv[1:6]
@@ -186,6 +189,7 @@ while IFS="$(printf '\t')" read -r _host _root; do
 	fi
 done <"$MAPS"
 
+# --- LaunchDaemons ------------------------------------------------------
 echo
 echo "Installing LaunchDaemons (sudo). They run as $USER_NAME so they start at boot without a GUI login."
 

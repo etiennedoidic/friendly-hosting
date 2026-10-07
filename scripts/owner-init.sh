@@ -74,6 +74,7 @@ echo "using $TS_BIN"
 "$TS_BIN" version | head -n 2 || true
 echo
 
+# --- ACL + auth key (token path) -----------------------------------------
 AUTH_KEY=""
 if [ -n "$TS_API_TOKEN" ]; then
 	TS_TAILNET="${TS_TAILNET:--}"
@@ -111,6 +112,7 @@ else
 	echo "no API token: browser login, no ACL write, no share link"
 fi
 
+# --- tailscale up --------------------------------------------------------
 _state="$(fh_backend_state || echo unknown)"
 echo "tailscale backend: $_state"
 if [ "$_state" != "Running" ]; then
@@ -132,6 +134,7 @@ echo
 echo "tailscale status:"
 "$TS_BIN" status || true
 
+# --- homes ---------------------------------------------------------------
 echo
 echo "initializing $OWNER home layout (private + public dirs)"
 fh_init_home "$OWNER"
@@ -144,6 +147,7 @@ if [ -n "$RENTER" ]; then
 	fi
 fi
 
+# --- Serve (private) -----------------------------------------------------
 _serve_user() {
 	_u="$1"
 	_dir="$(fh_private_dir_for "$_u")"
@@ -160,6 +164,7 @@ echo
 echo "tailscale serve status:"
 "$TS_BIN" serve status || true
 
+# --- share invite --------------------------------------------------------
 DNS="$(fh_dns_name || true)"
 if [ -z "$DNS" ]; then
 	DNS="${FH_HOSTNAME}.<tailnet>.ts.net"
