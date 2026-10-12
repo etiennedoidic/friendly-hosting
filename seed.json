@@ -1,0 +1,7 @@
+{
+  "kind": "tool",
+  "description": "Turn a Mac you own into a host friends can reach over Tailscale.",
+  "requires": ["macos", "tailscale"],
+  "permissions": ["admin"],
+  "tags": ["tailscale", "hosting"]
+}
