@@ -1,29 +1,34 @@
-# Friendly-hosting
+# What is friendly-hosting? 
+Do you have a mac mini laying around? 
+Does your friend have a mac mini laying around? 
+Why are you paying for webhosting, when you have latent compute power at your disposal?
+
+Let me suggest friendly-hosting! 
+The idea here is to be able facilitate shared hosting on trusted devices. 
+
+## Who does what
+The **owner** sits at the Mini once, pastes one Tailscale API token, and
+runs `owner-init.sh` to set up permissions and settings. 
+The **renter** installs Tailscale, taps a share link, and opens a URL. 
+If they want a shell, they send a public key and SSH in as a non-admin user. 
+They cannot sudo or write outside their home.
 
 Shared hosting on a Mac you own: unix users, Tailscale Serve for private
 files, Funnel or Cloudflare for a public `~/www` tree, SSH into a home
 directory. Tailscale is the web server for the private site. There is no
 nginx or Caddy.
 
-This folder does not know about any particular app. Defaults are `~/srv`
-(private, tailnet only) and `~/www` (public static files). Another product
-can point those at different paths with `FH_PRIVATE_DIR` and `FH_PUBLIC_DIR`.
-
-## Who does what
-
-The **owner** sits at the Mini once, pastes one Tailscale API token, and
-runs `owner-init.sh`. The **renter** installs Tailscale, taps a share
-link, and opens a URL. If they want a shell, they send a public key and
-SSH in as a non-admin user. They cannot sudo or write outside their home.
+Defaults are `~/srv` (private, tailnet only) and `~/www` (public static files). 
+Another product can point those at different paths with `FH_PRIVATE_DIR` and `FH_PUBLIC_DIR`.
 
 Private files live on port 443 over the tailnet. Public static files live
 in `~/www` on Funnel 8443 or Cloudflare. Do not Funnel port 443.
 
 ## Files
 
-- `docs/owner.md` — owner click list.
-- `docs/renter.md` — renter click list (phone site, SSH, public www).
-- `docs/domain.md` — public `www/` for owner and renter: Funnel (Tier 0) and real domain (Tier 1).
+- `docs/owner.md` — owner setup instructions.
+- `docs/renter.md` — renter setup instructions.
+- `docs/domain.md` — public website setup instructions for owner and renter: Funnel (Tier 0) and real domain (Tier 1).
 - `docs/appendix-family-invite.md` — invite the renter onto the owner’s tailnet instead of a device share.
 - `docs/client-variant.md` — Homebrew Tailscale on the Mini; App Store is fine on phones and renter laptops.
 - `scripts/prep-mini.sh` — keep the Mini awake and reachable after a reboot (skip on a laptop).
