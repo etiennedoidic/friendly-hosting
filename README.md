@@ -52,3 +52,4 @@ in `~/www` on Funnel 8443 or Cloudflare. Do not Funnel port 443.
 On a Mini: `prep-mini.sh` (if used) → `owner-init.sh` → `invite-renter.sh` as needed → `enable-public-www.sh` / `setup-cloudflared.sh` when you want the internet to see `www/`.
 
 On a laptop used only to develop the scripts: skip `prep-mini.sh`.
+
